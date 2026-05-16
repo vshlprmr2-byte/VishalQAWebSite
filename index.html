@@ -15,6 +15,7 @@
 <meta name="twitter:title" content="Vishal Parmar — QA Engineer Portfolio">
 <meta name="twitter:description" content="Breaking things on purpose. QA Analyst specializing in test automation.">
 <link rel="stylesheet" href="vishal-qa-portfolio.css">
+<link rel="stylesheet" href="hero-patch.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23E8281A'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,800;1,900&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -22,17 +23,45 @@
   <style>
     /* ── Hero word slide-in: left → right ── */
     @keyframes wordSlideIn {
-      from { opacity: 0; transform: translateX(-48px) skewX(-4deg); }
+      from { opacity: 0; transform: translateX(-56px) skewX(-5deg); }
       to   { opacity: 1; transform: translateX(0)     skewX(0deg);  }
     }
+
+    /* All hero words animate in */
     .hero-title .word {
       display: inline-block;
       opacity: 0;
-      animation: wordSlideIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: wordSlideIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    .word-w1 { animation-delay: 0.15s; }
-    .word-w2 { animation-delay: 0.32s; }
-    .word-w3 { animation-delay: 0.48s; }
+
+    /* BREAKING — solid black, strip any outline/ghost styling */
+    .word-w1 {
+      animation-delay: 0.12s;
+      color: #111111 !important;
+      -webkit-text-fill-color: #111111 !important;
+      -webkit-text-stroke: 0 !important;
+    }
+
+    /* THINGS, — keep ghost/outline exactly as designed, just slides in */
+    .word-w2 {
+      animation-delay: 0.26s;
+    }
+
+    /* ON — solid black */
+    .word-w3 {
+      animation-delay: 0.40s;
+      color: #111111 !important;
+      -webkit-text-fill-color: #111111 !important;
+      -webkit-text-stroke: 0 !important;
+    }
+
+    /* PURPOSE — solid black */
+    .word-w4 {
+      animation-delay: 0.54s;
+      color: #111111 !important;
+      -webkit-text-fill-color: #111111 !important;
+      -webkit-text-stroke: 0 !important;
+    }
   </style>
 </head>
 <body>
@@ -107,9 +136,9 @@
 
       <h1 class="hero-title">
         <span class="line-solid"><span class="word word-w1">BREAKING</span></span>
-        <span class="line-ghost"><span class="word">THINGS,</span></span>
-        <span class="line-solid"><span class="word word-w2">ON</span></span>
-        <span class="line-solid"><span class="word word-w3">PURPOSE</span><span class="red-period"></span></span>
+        <span class="line-ghost"><span class="word word-w2">THINGS,</span></span>
+        <span class="line-solid"><span class="word word-w3">ON</span></span>
+        <span class="line-solid"><span class="word word-w4">PURPOSE</span><span class="red-period"></span></span>
       </h1>
 
       <p class="hero-desc">
