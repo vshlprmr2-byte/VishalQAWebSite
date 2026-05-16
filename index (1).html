@@ -19,7 +19,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,800;1,900&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Mobile Nav Toggle -->
-  
+  <style>
+    /* ── Hero word slide-in: left → right ── */
+    @keyframes wordSlideIn {
+      from { opacity: 0; transform: translateX(-48px) skewX(-4deg); }
+      to   { opacity: 1; transform: translateX(0)     skewX(0deg);  }
+    }
+    .hero-title .word {
+      display: inline-block;
+      opacity: 0;
+      animation: wordSlideIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .word-w1 { animation-delay: 0.15s; }
+    .word-w2 { animation-delay: 0.32s; }
+    .word-w3 { animation-delay: 0.48s; }
+  </style>
 </head>
 <body>
 
@@ -478,9 +492,10 @@
     cc.className = 'char-count' + (len > 900 ? ' over' : len > 700 ? ' warn' : '');
   }
 
-  function handleSend() {
+  async function handleSend() {
     const name    = document.getElementById('f-name');
     const email   = document.getElementById('f-email');
+    const subject = document.getElementById('f-subject');
     const message = document.getElementById('f-message');
     const btn     = document.querySelector('.btn-send');
 
@@ -526,35 +541,62 @@
       return;
     }
 
-    // All valid — show success
+    // ── FORMSPREE SUBMISSION ──
     btn.textContent = 'SENDING...';
     btn.disabled = true;
     btn.style.opacity = '0.7';
 
-    setTimeout(() => {
-      btn.textContent = 'SENT ✓';
-      btn.style.background = '#1a7a3a';
-      btn.style.opacity = '1';
-      document.getElementById('form-success').style.display = 'block';
+    try {
+      const formData = new FormData();
+      formData.append('name',    nameVal);
+      formData.append('email',   emailVal);
+      formData.append('subject', subject.value.trim() || '(no subject)');
+      formData.append('message', messageVal);
 
-      // Reset form
+      const res = await fetch('https://formspree.io/f/mqenrgnz', {
+        method:  'POST',
+        body:    formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        // ── SUCCESS ──
+        btn.textContent = 'SENT ✓';
+        btn.style.background = '#1a7a3a';
+        btn.style.opacity = '1';
+        document.getElementById('form-success').style.display = 'block';
+
+        // Reset after 4s
+        setTimeout(() => {
+          name.value = ''; email.value = '';
+          subject.value = ''; message.value = '';
+          [name, email, message].forEach(el => el.classList.remove('error','success'));
+          ['err-name','err-email','err-message'].forEach(id => {
+            document.getElementById(id).textContent = '';
+          });
+          document.getElementById('char-count').textContent = '0 / 1000';
+          btn.textContent = 'SEND MESSAGE ✉';
+          btn.style.background = '';
+          btn.disabled = false;
+          document.getElementById('form-success').style.display = 'none';
+        }, 4000);
+
+      } else {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.errors?.map(e => e.message).join(', ') || 'Server error');
+      }
+
+    } catch (err) {
+      btn.textContent = 'FAILED — TRY AGAIN';
+      btn.style.background = '#7a1a1a';
+      btn.style.opacity = '1';
+      btn.disabled = false;
       setTimeout(() => {
-        name.value = ''; email.value = '';
-        document.getElementById('f-subject').value = '';
-        message.value = '';
-        [name, email, message].forEach(el => {
-          el.classList.remove('error','success');
-        });
-        ['err-name','err-email','err-message'].forEach(id => {
-          document.getElementById(id).textContent = '';
-        });
-        document.getElementById('char-count').textContent = '0 / 1000';
         btn.textContent = 'SEND MESSAGE ✉';
         btn.style.background = '';
-        btn.disabled = false;
-        document.getElementById('form-success').style.display = 'none';
-      }, 4000);
-    }, 800);
+      }, 3500);
+      console.error('Formspree error:', err.message);
+    }
   }
 
   // ─── NAV active highlight ───
