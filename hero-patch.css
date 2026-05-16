@@ -1,0 +1,59 @@
+/* ================================================================
+   hero-patch.css
+   Drop this <link> AFTER your main vishal-qa-portfolio.css so
+   these rules take priority.
+
+   What it does:
+   · Slides ALL four hero words in from left → right on page load
+   · Forces BREAKING / ON / PURPOSE to solid black (#111)
+   · Leaves THINGS, in its original ghost / outline style
+   ================================================================ */
+
+/* ── Keyframe ─────────────────────────────────────────────────── */
+@keyframes wordSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-56px) skewX(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) skewX(0deg);
+  }
+}
+
+/* ── All four words start invisible and slide in ─────────────── */
+.hero-title .word {
+  display: inline-block;
+  opacity: 0;
+  animation: wordSlideIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── BREAKING — solid black ───────────────────────────────────── */
+.word-w1 {
+  animation-delay: 0.12s;
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111 !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+/* ── THINGS, — keep original ghost / outline style, just animates */
+.word-w2 {
+  animation-delay: 0.26s;
+  /* intentionally no color override — inherits .line-ghost styling */
+}
+
+/* ── ON — solid black ─────────────────────────────────────────── */
+.word-w3 {
+  animation-delay: 0.40s;
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111 !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+/* ── PURPOSE — solid black ────────────────────────────────────── */
+.word-w4 {
+  animation-delay: 0.54s;
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111 !important;
+  -webkit-text-stroke: 0 !important;
+}
