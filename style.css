@@ -1266,6 +1266,72 @@
   body.dark-mode .about-body { color: #aaa; }
   body.dark-mode .hero-desc { color: #999; }
 
+  /* ── DARK MODE — nav logo & mobile menu ── */
+  body.dark-mode .nav-logo { color: #f0f0ee; }
+  body.dark-mode .nav-logo .slash { color: #555; }
+  body.dark-mode .nav-logo .portfolio { color: #777; }
+  body.dark-mode .nav-links a { color: #f0f0ee; }
+  body.dark-mode .mobile-menu {
+    background: rgba(13,13,13,0.98);
+    border-color: #2a2a2a;
+  }
+  body.dark-mode .mobile-menu a { color: #f0f0ee; border-color: #2a2a2a; }
+  body.dark-mode .hamburger span { background: #f0f0ee; }
+
+  /* ── DARK MODE — section labels & headings ── */
+  body.dark-mode .section-num,
+  body.dark-mode .section-label { color: #666; }
+  body.dark-mode .about-heading,
+  body.dark-mode .skills-heading,
+  body.dark-mode .exp-heading,
+  body.dark-mode .proj-heading,
+  body.dark-mode .certs-heading,
+  body.dark-mode .contact-heading,
+  body.dark-mode .test-heading { color: #f0f0ee; }
+
+  /* ── DARK MODE — body copy & sub-labels ── */
+  body.dark-mode .skills-sub { color: #777; }
+  body.dark-mode .skill-title { color: #f0f0ee; }
+  body.dark-mode .skill-list li { color: #aaa; border-color: #2a2a2a; }
+  body.dark-mode .skill-list li::before { background: #f0f0ee; }
+  body.dark-mode .skill-tag { color: #666; }
+  body.dark-mode .exp-title { color: #f0f0ee; }
+  body.dark-mode .exp-desc { color: #aaa; }
+  body.dark-mode .exp-company { color: #f0f0ee; }
+  body.dark-mode .proj-desc { color: #aaa; }
+  body.dark-mode .proj-title { color: #f0f0ee; }
+  body.dark-mode .proj-impact-val { color: #f0f0ee; }
+  body.dark-mode .proj-body { background: #1a1a1a; }
+  body.dark-mode .test-quote { color: #aaa; }
+  body.dark-mode .test-author { color: #f0f0ee; }
+  body.dark-mode .test-card { border-color: #2a2a2a; background: #111; }
+  body.dark-mode #testimonials { background: #111; }
+  body.dark-mode .track-label,
+  body.dark-mode .info-label { color: #666; }
+  body.dark-mode .hero-scroll-hint { color: #555; }
+  body.dark-mode .hero-version { color: #444; }
+
+  /* ── DARK MODE — hero title: force light fill after animation ── */
+  body.dark-mode .hero-title .word-w1,
+  body.dark-mode .hero-title .word-w3,
+  body.dark-mode .hero-title .word-w4 {
+    -webkit-text-fill-color: #f0f0ee !important;
+    color: #f0f0ee !important;
+    animation-name: slideInWordDark;
+  }
+  @keyframes slideInWordDark {
+    0%   { opacity: 0; transform: translateX(-140px); color: #555; -webkit-text-fill-color: #555; }
+    40%  { opacity: 1; color: #555; -webkit-text-fill-color: #555; }
+    100% { opacity: 1; transform: translateX(0); color: #f0f0ee; -webkit-text-fill-color: #f0f0ee; }
+  }
+
+  /* ── DARK MODE — form & contact misc ── */
+  body.dark-mode .form-label { color: #aaa; }
+  body.dark-mode .form-trust { color: #555; }
+  body.dark-mode .cert-name { color: #f0f0ee; }
+  body.dark-mode .cert-code { color: #f0f0ee; }
+  body.dark-mode .cert-year { color: #666; }
+
   /* ── DARK MODE TOGGLE BUTTON ── */
   .dark-toggle {
     position: fixed;
