@@ -20,41 +20,14 @@
 
   <!-- Mobile Nav Toggle -->
   <style>
-    /* ── Hero word slide-in: left → right ── */
-    @keyframes wordSlideIn {
-      from { opacity: 0; transform: translateX(-56px) skewX(-5deg); }
-      to   { opacity: 1; transform: translateX(0)     skewX(0deg);  }
-    }
-
-    /* All hero words animate in */
-    .hero-title .word {
-      display: inline-block;
-      opacity: 0;
-      animation: wordSlideIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    /* BREAKING — solid, strip any outline/ghost styling */
-    .word-w1 {
-      animation-delay: 0.12s;
-      -webkit-text-stroke: 0 !important;
-    }
-
-    /* THINGS, — keep ghost/outline exactly as designed, just slides in */
-    .word-w2 {
-      animation-delay: 0.26s;
-    }
-
-    /* ON — solid */
-    .word-w3 {
-      animation-delay: 0.40s;
-      -webkit-text-stroke: 0 !important;
-    }
-
-    /* PURPOSE — solid */
-    .word-w4 {
-      animation-delay: 0.54s;
-      -webkit-text-stroke: 0 !important;
-    }
+    /*
+      Animation delays for hero words — actual keyframes live in style.css
+      (slideInWord: grey → black, slideInGhost: grey stays grey)
+    */
+    .hero-title .word-w1 { animation-delay: 0.12s; -webkit-text-stroke: 0 !important; }
+    .hero-title .word-w2 { animation-delay: 0.26s; }
+    .hero-title .word-w3 { animation-delay: 0.40s; -webkit-text-stroke: 0 !important; }
+    .hero-title .word-w4 { animation-delay: 0.54s; -webkit-text-stroke: 0 !important; }
   </style>
 </head>
 <body>
