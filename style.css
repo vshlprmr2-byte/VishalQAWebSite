@@ -1535,20 +1535,113 @@
   /* ── PARALLAX HERO ── */
   .hero-title-wrap { will-change: transform; }
 
+  /* ── TESTIMONIALS RESPONSIVE ── */
+
+  /* Tablet: 768px – 1024px */
+  @media (max-width: 1024px) {
+    #testimonials { padding: 80px 40px; }
+    .test-inner { grid-template-columns: 140px 1fr; gap: 0; }
+    .test-heading { font-size: 32px; margin-bottom: 28px; }
+    .test-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .test-card {
+      border-right: 1px solid var(--grid-color);
+      border-bottom: 1px solid var(--grid-color);
+      border-top: none;
+      border-left: 1px solid var(--grid-color);
+      padding: 24px 20px;
+    }
+    .test-card:first-child { border-top: 1px solid var(--grid-color); }
+    .test-card:last-child { border-bottom: 1px solid var(--grid-color); }
+  }
+
+  /* Mobile: max 768px */
   @media (max-width: 768px) {
     #testimonials { padding: 60px 20px; }
-    .test-inner { grid-template-columns: 1fr; }
-    .test-grid { grid-template-columns: 1fr; }
-    .test-card { border-right: 1px solid var(--grid-color); border-bottom: none; }
-    .test-card:last-child { border-bottom: none; }
+
+    .test-inner {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    /* sidebar label stacks on top */
+    .test-inner > div:first-child {
+      margin-bottom: 24px;
+    }
+
+    .test-heading {
+      font-size: 28px;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+
+    .test-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border: 1px solid var(--grid-color);
+    }
+
+    .test-card {
+      padding: 24px 20px;
+      border: none;
+      border-bottom: 1px solid var(--grid-color);
+    }
+
+    .test-card:last-child {
+      border-bottom: none;
+    }
+
+    .test-quote {
+      font-size: 14px;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .test-quote::before {
+      font-size: 32px;
+      vertical-align: -12px;
+    }
+
+    .test-author {
+      font-size: 13px;
+    }
+
+    .test-role {
+      font-size: 10px;
+    }
+
     .dark-toggle { bottom: 80px; left: 16px; }
     .back-to-top { bottom: 28px; right: 16px; }
   }
-  @media (max-width: 1024px) {
-    #testimonials { padding: 80px 40px; }
-    .test-inner { grid-template-columns: 140px 1fr; }
-    .test-grid { grid-template-columns: 1fr; gap: 0; }
-    .test-card { border-right: 1px solid var(--grid-color); border-bottom: none; }
+
+  /* Small phones: max 480px */
+  @media (max-width: 480px) {
+    #testimonials { padding: 48px 16px; }
+
+    .test-heading {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .test-card {
+      padding: 20px 16px;
+    }
+
+    .test-quote {
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .test-author {
+      font-size: 12px;
+    }
+
+    .test-role {
+      font-size: 9.5px;
+    }
   }
 
 
