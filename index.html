@@ -265,10 +265,18 @@
     <div class="fade-in">
       <div class="proj-heading-row">
         <h2 class="proj-heading">Things I shipped,<br>with receipts.</h2>
-        <div class="proj-count">SELECTED · 03 OF 12</div>
+        <div class="proj-count" id="proj-slide-label">SELECTED · 01 OF 05</div>
       </div>
 
-      <div class="proj-grid" id="proj-grid">
+      <div class="proj-slider-viewport">
+        <div class="proj-grid" id="proj-grid"></div>
+      </div>
+
+      <div class="proj-controls">
+        <button class="proj-arrow" id="proj-prev" aria-label="Previous">←</button>
+        <button class="proj-arrow" id="proj-next" aria-label="Next">→</button>
+        <div class="proj-dots" id="proj-dots"></div>
+        <span class="proj-slide-counter" id="proj-counter">01 / 05</span>
       </div>
     </div>
   </div>
@@ -773,7 +781,7 @@
     </div>
   `).join("");
 
-  // Render projects
+  // Render projects as slider
   const projGrid = document.getElementById("proj-grid");
   projGrid.innerHTML = PROJECTS.map(p => `
     <div class="proj-card">
@@ -796,11 +804,96 @@
             <div class="proj-impact-label">IMPACT</div>
             <div class="proj-impact-val">${p.impact}</div>
           </div>
-          <a href="${p.link}" class="proj-read">READ ↗</a>
+          <a href="${p.link}" target="_blank" class="proj-read">VIEW ↗</a>
         </div>
       </div>
     </div>
   `).join("");
+
+  // ── SLIDER LOGIC ──────────────────────────────────────────────
+  (function initProjSlider() {
+    const grid      = document.getElementById("proj-grid");
+    const prevBtn   = document.getElementById("proj-prev");
+    const nextBtn   = document.getElementById("proj-next");
+    const dotsWrap  = document.getElementById("proj-dots");
+    const counter   = document.getElementById("proj-counter");
+    const label     = document.getElementById("proj-slide-label");
+    const total     = PROJECTS.length;
+    let current     = 0;
+
+    // Build dots
+    dotsWrap.innerHTML = PROJECTS.map((_, i) =>
+      `<button class="proj-dot${i === 0 ? " active" : ""}" data-i="${i}" aria-label="Go to slide ${i+1}"></button>`
+    ).join("");
+
+    function visibleCount() {
+      const w = window.innerWidth;
+      if (w <= 768)  return 1;
+      if (w <= 1024) return 2;
+      return 3;
+    }
+
+    function maxIndex() {
+      return Math.max(0, total - visibleCount());
+    }
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+
+    function goTo(idx) {
+      const vis = visibleCount();
+      current = Math.max(0, Math.min(idx, maxIndex()));
+      const cardW = grid.querySelector(".proj-card").offsetWidth;
+      grid.style.transform = `translateX(-${current * cardW}px)`;
+
+      // Update dots
+      dotsWrap.querySelectorAll(".proj-dot").forEach((d, i) => {
+        d.classList.toggle("active", i === current);
+      });
+
+      // Update counter and label
+      const display = current + 1;
+      counter.textContent = `${pad(display)} / ${pad(total)}`;
+      label.textContent   = `SELECTED · ${pad(display)} OF ${pad(total)}`;
+
+      // Arrow states
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current >= maxIndex();
+    }
+
+    // Arrow clicks
+    prevBtn.addEventListener("click", () => goTo(current - 1));
+    nextBtn.addEventListener("click", () => goTo(current + 1));
+
+    // Dot clicks
+    dotsWrap.addEventListener("click", e => {
+      const btn = e.target.closest(".proj-dot");
+      if (btn) goTo(parseInt(btn.dataset.i));
+    });
+
+    // Touch / swipe support
+    let touchStartX = 0;
+    grid.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    grid.addEventListener("touchend",   e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+
+    // Keyboard support when section is in view
+    document.addEventListener("keydown", e => {
+      const section = document.getElementById("projects");
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        if (e.key === "ArrowRight") goTo(current + 1);
+        if (e.key === "ArrowLeft")  goTo(current - 1);
+      }
+    });
+
+    // Recalculate on resize
+    window.addEventListener("resize", () => goTo(current));
+
+    // Init
+    goTo(0);
+  })();
 
   // Render certifications
   const certsGrid = document.getElementById("certs-grid");
