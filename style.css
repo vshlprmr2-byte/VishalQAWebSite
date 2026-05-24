@@ -1358,7 +1358,7 @@
   .page-loader {
     position: fixed;
     inset: 0;
-    background: var(--black);
+    background: #111111;
     z-index: 99999;
     display: flex;
     align-items: center;
@@ -1372,7 +1372,7 @@
     display: flex; align-items: center; gap: 8px;
     font-family: 'Barlow', sans-serif;
     font-weight: 900; font-size: 22px;
-    color: #fff;
+    color: #f0f0ee;
     letter-spacing: -0.02em;
   }
   .loader-red { width: 14px; height: 14px; background: #E8281A; }
@@ -1395,10 +1395,15 @@
   .loader-text {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px; letter-spacing: 0.2em;
-    color: #555; text-transform: uppercase;
+    color: #666; text-transform: uppercase;
     animation: loaderBlink 0.8s steps(1) infinite;
   }
   @keyframes loaderBlink { 50% { opacity: 0; } }
+
+  /* Loader is always dark — no override needed, but keep consistent */
+  body.dark-mode .page-loader  { background: #0d0d0d; }
+  body.dark-mode .loader-logo  { color: #f0f0ee; }
+  body.dark-mode .loader-text  { color: #555; }
 
   /* ── COUNTER ANIMATION ── */
   .count-animated { transition: all 0.3s; }
@@ -1486,19 +1491,6 @@
   .cv-btn:hover { background: var(--black); color: var(--white); }
   body.dark-mode .cv-btn { border-color: #f0f0ee; color: #f0f0ee; }
   body.dark-mode .cv-btn:hover { background: #f0f0ee; color: #111; }
-
-  /* ── Contact section text — dark mode ── */
-  body.dark-mode .contact-heading          { color: #f0f0ee; }
-  body.dark-mode .contact-heading .red-period { color: var(--red); }
-  body.dark-mode .contact-desc             { color: #aaa; }
-  body.dark-mode .contact-section-label    { color: #666; }
-  body.dark-mode .contact-link             { border-color: #2a2a2a; }
-  body.dark-mode .contact-link-label       { color: #777; }
-
-  /* ── Footer text — dark mode ── */
-  body.dark-mode .footer-copy              { color: #666; }
-  body.dark-mode .footer-links a           { color: #666; }
-  body.dark-mode .footer-links a:hover     { color: #f0f0ee; }
 
   /* ── COPY EMAIL ── */
   .copy-email-btn {
