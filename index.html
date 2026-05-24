@@ -812,7 +812,8 @@
 
   // ── PROJECT SLIDER ─────────────────────────────────────────────
   (function initProjSlider() {
-    const grid     = document.getElementById("proj-grid");
+    const viewport = document.querySelector(".proj-slider-viewport");
+    const track    = document.getElementById("proj-grid");
     const prevBtn  = document.getElementById("proj-prev");
     const nextBtn  = document.getElementById("proj-next");
     const dotsWrap = document.getElementById("proj-dots");
@@ -827,8 +828,9 @@
     ).join("");
 
     function visibleCount() {
-      if (window.innerWidth <= 768)  return 1;
-      if (window.innerWidth <= 1024) return 2;
+      const w = window.innerWidth;
+      if (w <= 768)  return 1;
+      if (w <= 1024) return 2;
       return 3;
     }
 
@@ -840,43 +842,47 @@
 
     function goTo(idx) {
       current = Math.max(0, Math.min(idx, maxIndex()));
-      const cardW = grid.querySelector(".proj-card").offsetWidth;
-      grid.style.transform = `translateX(-${current * cardW}px)`;
 
-      // dots
+      // Use viewport width divided by visible cards for pixel-perfect offset
+      const cardW = viewport.offsetWidth / visibleCount();
+      track.style.transform = `translateX(-${current * cardW}px)`;
+
+      // Sync dots
       dotsWrap.querySelectorAll(".proj-dot").forEach((d, i) =>
         d.classList.toggle("active", i === current)
       );
 
-      // counters
+      // Sync counters
       const disp = current + 1;
       counter.textContent  = `${pad(disp)} / ${pad(total)}`;
       countLbl.textContent = `SELECTED · ${pad(disp)} OF ${pad(total)}`;
 
-      // arrows
+      // Sync arrow states
       prevBtn.disabled = current === 0;
       nextBtn.disabled = current >= maxIndex();
     }
 
+    // Arrow clicks
     prevBtn.addEventListener("click", () => goTo(current - 1));
     nextBtn.addEventListener("click", () => goTo(current + 1));
 
+    // Dot clicks
     dotsWrap.addEventListener("click", e => {
       const btn = e.target.closest(".proj-dot");
       if (btn) goTo(parseInt(btn.dataset.i));
     });
 
-    // Swipe support
+    // Touch / swipe
     let touchStartX = 0;
-    grid.addEventListener("touchstart", e => {
+    track.addEventListener("touchstart", e => {
       touchStartX = e.touches[0].clientX;
     }, { passive: true });
-    grid.addEventListener("touchend", e => {
+    track.addEventListener("touchend", e => {
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
     });
 
-    // Keyboard (when section is in view)
+    // Keyboard (only when section is visible)
     document.addEventListener("keydown", e => {
       const rect = document.getElementById("projects").getBoundingClientRect();
       if (rect.top < window.innerHeight && rect.bottom > 0) {
@@ -885,9 +891,14 @@
       }
     });
 
-    // Recalc on resize
-    window.addEventListener("resize", () => goTo(current));
+    // Recalculate on window resize
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => goTo(current), 80);
+    });
 
+    // Init
     goTo(0);
   })();
 

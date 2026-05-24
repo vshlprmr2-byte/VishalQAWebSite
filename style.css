@@ -653,21 +653,89 @@
     margin-bottom: 40px;
   }
 
-  .proj-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
+  /* ── Slider viewport: clips the scrolling track ── */
+  .proj-slider-viewport {
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--grid-color);
   }
 
-  .proj-card {
-    background: var(--white);
-    border: 1px solid var(--grid-color);
-    border-right: none;
-    overflow: hidden;
-    transition: transform 0.2s;
+  /* ── The track: all cards sit side-by-side in a flex row ── */
+  .proj-grid {
+    display: flex;
+    gap: 0;
+    transition: transform 0.48s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
   }
-  .proj-card:last-child { border-right: 1px solid var(--grid-color); }
-  .proj-card:hover { transform: translateY(-2px); }
+
+  /* ── Each card: 1/3 width on desktop ── */
+  .proj-card {
+    flex: 0 0 calc(100% / 3);
+    min-width: calc(100% / 3);
+    background: var(--white);
+    border-right: 1px solid var(--grid-color);
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: background 0.2s;
+  }
+  .proj-card:last-child { border-right: none; }
+
+  /* ── Controls row ── */
+  .proj-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .proj-arrow {
+    width: 40px; height: 40px;
+    border: 1px solid var(--grid-color);
+    background: var(--white);
+    color: var(--black);
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    user-select: none;
+    font-family: var(--font-mono);
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+  .proj-arrow:hover:not(:disabled) {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+  .proj-arrow:disabled {
+    opacity: 0.22;
+    cursor: not-allowed;
+  }
+
+  .proj-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex: 1;
+  }
+  .proj-dot {
+    height: 2px; width: 20px;
+    background: var(--grid-color);
+    border: none; padding: 0;
+    cursor: pointer;
+    transition: width 0.22s, background 0.22s;
+  }
+  .proj-dot.active {
+    width: 36px;
+    background: var(--red);
+  }
+
+  .proj-slide-counter {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #999;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
 
   .proj-img {
     width: 100%; height: 180px;
@@ -1033,9 +1101,7 @@
   .skill-card:nth-child(3) { border-top: 1px solid var(--grid-color); }
   .skill-card:nth-child(4) { border-top: 1px solid var(--grid-color); }
 
-  .proj-grid { grid-template-columns: repeat(2, 1fr); }
-  .proj-card:nth-child(2) { border-right: 1px solid var(--grid-color); }
-  .proj-card:nth-child(3) { border-top: 1px solid var(--grid-color); grid-column: 1 / -1; max-width: 50%; }
+  .proj-card { flex: 0 0 50%; min-width: 50%; }
 
   .certs-grid { grid-template-columns: repeat(2, 1fr); }
   .cert-card:nth-child(2) { border-right: none; }
@@ -1130,10 +1196,9 @@
   /* PROJECTS */
   .proj-heading { font-size: clamp(28px, 7vw, 40px); }
   .proj-heading-row { flex-direction: column; gap: 8px; align-items: flex-start; }
-  .proj-grid { grid-template-columns: 1fr; }
-  .proj-card { border-right: 1px solid var(--grid-color) !important; border-top: none; }
-  .proj-card + .proj-card { border-top: 1px solid var(--grid-color) !important; }
-  .proj-card:nth-child(3) { max-width: 100%; grid-column: auto; }
+  .proj-card { flex: 0 0 100%; min-width: 100%; border-right: none; }
+  .proj-controls { margin-top: 14px; gap: 10px; }
+  .proj-arrow { width: 36px; height: 36px; font-size: 14px; }
 
   /* CERTS */
   .certs-heading { font-size: clamp(36px, 9vw, 56px); }
@@ -1247,6 +1312,12 @@
   body.dark-mode .skills-grid,
   body.dark-mode .skill-card { background: #1a1a1a; border-color: #2a2a2a; }
   body.dark-mode .proj-card { background: #1a1a1a; border-color: #2a2a2a; }
+  body.dark-mode .proj-slider-viewport { border-color: #2a2a2a; }
+  body.dark-mode .proj-arrow { background: #1a1a1a; border-color: #2a2a2a; color: #f0f0ee; }
+  body.dark-mode .proj-arrow:hover:not(:disabled) { background: #f0f0ee; color: #111; border-color: #f0f0ee; }
+  body.dark-mode .proj-dot { background: #2a2a2a; }
+  body.dark-mode .proj-dot.active { background: var(--red); }
+  body.dark-mode .proj-slide-counter { color: #666; }
   body.dark-mode .certs-grid,
   body.dark-mode .cert-card { border-color: #2a2a2a; }
   body.dark-mode .exp-item { border-color: #2a2a2a; }
