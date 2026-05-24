@@ -653,30 +653,21 @@
     margin-bottom: 40px;
   }
 
-  .proj-slider-viewport {
-    overflow: hidden;
-    position: relative;
-    border: 1px solid var(--grid-color);
-  }
-
   .proj-grid {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 0;
-    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform;
   }
 
   .proj-card {
-    flex: 0 0 calc(100% / 3);
-    min-width: calc(100% / 3);
     background: var(--white);
-    border-right: 1px solid var(--grid-color);
+    border: 1px solid var(--grid-color);
+    border-right: none;
     overflow: hidden;
-    transition: background 0.2s;
-    box-sizing: border-box;
+    transition: transform 0.2s;
   }
-  .proj-card:first-child { border-left: none; }
-  .proj-card:last-child  { border-right: none; }
+  .proj-card:last-child { border-right: 1px solid var(--grid-color); }
+  .proj-card:hover { transform: translateY(-2px); }
 
   .proj-img {
     width: 100%; height: 180px;
@@ -1042,11 +1033,9 @@
   .skill-card:nth-child(3) { border-top: 1px solid var(--grid-color); }
   .skill-card:nth-child(4) { border-top: 1px solid var(--grid-color); }
 
-  .proj-grid { }
-  .proj-card {
-    flex: 0 0 50%;
-    min-width: 50%;
-  }
+  .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  .proj-card:nth-child(2) { border-right: 1px solid var(--grid-color); }
+  .proj-card:nth-child(3) { border-top: 1px solid var(--grid-color); grid-column: 1 / -1; max-width: 50%; }
 
   .certs-grid { grid-template-columns: repeat(2, 1fr); }
   .cert-card:nth-child(2) { border-right: none; }
@@ -1141,11 +1130,10 @@
   /* PROJECTS */
   .proj-heading { font-size: clamp(28px, 7vw, 40px); }
   .proj-heading-row { flex-direction: column; gap: 8px; align-items: flex-start; }
-  .proj-card {
-    flex: 0 0 100%;
-    min-width: 100%;
-    border-right: none !important;
-  }
+  .proj-grid { grid-template-columns: 1fr; }
+  .proj-card { border-right: 1px solid var(--grid-color) !important; border-top: none; }
+  .proj-card + .proj-card { border-top: 1px solid var(--grid-color) !important; }
+  .proj-card:nth-child(3) { max-width: 100%; grid-column: auto; }
 
   /* CERTS */
   .certs-heading { font-size: clamp(36px, 9vw, 56px); }
@@ -1282,6 +1270,19 @@
   body.dark-mode .copy-email-btn { color: #f0f0ee; }
   body.dark-mode .copy-email-btn:hover { color: var(--red); }
 
+  /* ── Contact section heading & desc ── */
+  body.dark-mode .contact-heading          { color: #f0f0ee; }
+  body.dark-mode .contact-heading .red-period { color: var(--red); }
+  body.dark-mode .contact-desc             { color: #aaa; }
+  body.dark-mode .contact-section-label    { color: #666; }
+  body.dark-mode .contact-link             { border-color: #2a2a2a; }
+  body.dark-mode .contact-link-label       { color: #777; }
+
+  /* ── Footer text ── */
+  body.dark-mode .footer-copy          { color: #666; }
+  body.dark-mode .footer-links a       { color: #666; }
+  body.dark-mode .footer-links a:hover { color: #f0f0ee; }
+
   /* ── DARK MODE TOGGLE BUTTON ── */
   .dark-toggle {
     position: fixed;
@@ -1370,7 +1371,7 @@
   .page-loader {
     position: fixed;
     inset: 0;
-    background: var(--black);
+    background: #111111;
     z-index: 99999;
     display: flex;
     align-items: center;
@@ -1384,13 +1385,13 @@
     display: flex; align-items: center; gap: 8px;
     font-family: 'Barlow', sans-serif;
     font-weight: 900; font-size: 22px;
-    color: #fff;
+    color: #f0f0ee;
     letter-spacing: -0.02em;
   }
   .loader-red { width: 14px; height: 14px; background: #E8281A; }
   .loader-bar-wrap {
     width: 200px; height: 2px;
-    background: #222;
+    background: #2a2a2a;
     overflow: hidden;
   }
   .loader-bar {
@@ -1407,10 +1408,13 @@
   .loader-text {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px; letter-spacing: 0.2em;
-    color: #555; text-transform: uppercase;
+    color: #666; text-transform: uppercase;
     animation: loaderBlink 0.8s steps(1) infinite;
   }
   @keyframes loaderBlink { 50% { opacity: 0; } }
+
+  /* Loader is always dark — deepen slightly in dark mode */
+  body.dark-mode .page-loader { background: #0d0d0d; }
 
   /* ── COUNTER ANIMATION ── */
   .count-animated { transition: all 0.3s; }
@@ -1711,88 +1715,3 @@
       .hamburger { display: none !important; }
       .mobile-menu { display: none !important; }
     }
-/* ════════════════════════════════════════════════════════════════
-   PROJECT SLIDER CONTROLS
-   ════════════════════════════════════════════════════════════════ */
-
-.proj-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.proj-arrow {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--grid-color);
-  background: var(--white);
-  color: var(--black);
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
-  flex-shrink: 0;
-  user-select: none;
-  font-family: var(--font-mono);
-}
-.proj-arrow:hover:not(:disabled) {
-  background: var(--black);
-  color: var(--white);
-  border-color: var(--black);
-}
-.proj-arrow:disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-}
-
-.proj-dots {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex: 1;
-}
-.proj-dot {
-  height: 2px;
-  width: 20px;
-  background: var(--grid-color);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: width 0.22s, background 0.22s;
-}
-.proj-dot.active {
-  width: 36px;
-  background: var(--red);
-}
-
-.proj-slide-counter {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: #999;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
-
-/* Dark mode controls */
-body.dark-mode .proj-arrow {
-  background: #111;
-  border-color: #2a2a2a;
-  color: #f0f0ee;
-}
-body.dark-mode .proj-arrow:hover:not(:disabled) {
-  background: #f0f0ee;
-  color: #111;
-  border-color: #f0f0ee;
-}
-body.dark-mode .proj-dot { background: #2a2a2a; }
-body.dark-mode .proj-dot.active { background: var(--red); }
-body.dark-mode .proj-slider-viewport { border-color: #2a2a2a; }
-
-/* Responsive controls */
-@media (max-width: 768px) {
-  .proj-controls { margin-top: 14px; gap: 10px; }
-  .proj-arrow { width: 36px; height: 36px; font-size: 14px; }
-}
