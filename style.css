@@ -1487,6 +1487,19 @@
   body.dark-mode .cv-btn { border-color: #f0f0ee; color: #f0f0ee; }
   body.dark-mode .cv-btn:hover { background: #f0f0ee; color: #111; }
 
+  /* ── Contact section text — dark mode ── */
+  body.dark-mode .contact-heading          { color: #f0f0ee; }
+  body.dark-mode .contact-heading .red-period { color: var(--red); }
+  body.dark-mode .contact-desc             { color: #aaa; }
+  body.dark-mode .contact-section-label    { color: #666; }
+  body.dark-mode .contact-link             { border-color: #2a2a2a; }
+  body.dark-mode .contact-link-label       { color: #777; }
+
+  /* ── Footer text — dark mode ── */
+  body.dark-mode .footer-copy              { color: #666; }
+  body.dark-mode .footer-links a           { color: #666; }
+  body.dark-mode .footer-links a:hover     { color: #f0f0ee; }
+
   /* ── COPY EMAIL ── */
   .copy-email-btn {
     display: inline-flex; align-items: center; gap: 6px;
@@ -1699,171 +1712,3 @@
       .hamburger { display: none !important; }
       .mobile-menu { display: none !important; }
     }
-/* ════════════════════════════════════════════════════════════════
-   COLOUR FIXES — replace all hardcoded muted greys with
-   CSS custom-property-aware values so they adapt to dark mode.
-   ════════════════════════════════════════════════════════════════ */
-
-/* Define semantic tokens on :root */
-:root {
-  --text-body:    #444;   /* body copy */
-  --text-muted:   #555;   /* secondary text */
-  --text-subtle:  #666;   /* captions, labels */
-  --text-faint:   #999;   /* placeholders, counters */
-}
-
-body.dark-mode {
-  --text-body:   #c0c0be;
-  --text-muted:  #aaaaaa;
-  --text-subtle: #888888;
-  --text-faint:  #666666;
-}
-
-/* Hero */
-.hero-badge-text              { color: var(--text-muted)  !important; }
-.hero-desc                    { color: var(--text-body)   !important; }
-
-/* About */
-.about-body                   { color: var(--text-body)   !important; }
-.about-body em                { color: var(--text-subtle) !important; }
-
-/* Skills */
-.skills-sub                   { color: var(--text-subtle) !important; }
-.skill-list li                { color: var(--text-body)   !important; }
-
-/* Experience */
-.exp-desc                     { color: var(--text-muted)  !important; }
-.exp-tag                      { color: var(--text-muted)  !important; }
-
-/* Projects */
-.proj-desc                    { color: var(--text-muted)  !important; }
-.proj-count                   { color: var(--text-faint)  !important; }
-.proj-tech                    { color: var(--text-subtle) !important; }
-
-/* Certs */
-.certs-sub                    { color: var(--text-subtle) !important; }
-
-/* Contact */
-.contact-section-label        { color: var(--text-subtle) !important; }
-.contact-link-label           { color: var(--text-muted)  !important; }
-
-/* Footer */
-.footer-copy                  { color: var(--text-muted)  !important; }
-.footer-links a               { color: var(--text-muted)  !important; }
-
-/* Loader */
-.loader-text                  { color: var(--text-muted)  !important; }
-
-/* Testimonials */
-.test-quote                   { color: var(--text-body)   !important; }
-
-/* ════════════════════════════════════════════════════════════════
-   PROJECT SLIDER
-   ════════════════════════════════════════════════════════════════ */
-
-/* Wrap the grid in a viewport */
-.proj-slider-viewport {
-  overflow: hidden;
-  position: relative;
-}
-
-/* Grid becomes a horizontal track */
-.proj-grid {
-  display: flex !important;
-  gap: 0 !important;
-  grid-template-columns: unset !important;
-  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: transform;
-}
-
-/* Each card is a fixed-width slide */
-.proj-card {
-  flex: 0 0 calc(100% / 3) !important;
-  min-width: calc(100% / 3) !important;
-  border-right: none !important;
-  border-left: 1px solid var(--grid-color) !important;
-  border-top: 1px solid var(--grid-color) !important;
-  border-bottom: 1px solid var(--grid-color) !important;
-  box-sizing: border-box;
-}
-.proj-card:last-child {
-  border-right: 1px solid var(--grid-color) !important;
-}
-
-/* Slider controls row */
-.proj-controls {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.proj-arrow {
-  width: 40px; height: 40px;
-  border: 1px solid var(--grid-color);
-  background: var(--white);
-  color: var(--black);
-  font-size: 16px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
-  flex-shrink: 0;
-  user-select: none;
-  border-radius: 0;
-}
-.proj-arrow:hover {
-  background: var(--black);
-  color: var(--white);
-  border-color: var(--black);
-}
-.proj-arrow:disabled {
-  opacity: 0.3;
-  cursor: default;
-  pointer-events: none;
-}
-
-/* Dot indicators */
-.proj-dots {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex: 1;
-}
-.proj-dot {
-  width: 20px; height: 2px;
-  background: var(--grid-color);
-  cursor: pointer;
-  transition: background 0.2s, width 0.2s;
-  border: none;
-  padding: 0;
-}
-.proj-dot.active {
-  background: var(--red);
-  width: 32px;
-}
-
-/* Slide counter */
-.proj-slide-counter {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-faint);
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
-
-/* Tablet: 2 cards visible */
-@media (max-width: 1024px) {
-  .proj-card {
-    flex: 0 0 50% !important;
-    min-width: 50% !important;
-  }
-}
-
-/* Mobile: 1 card visible */
-@media (max-width: 768px) {
-  .proj-card {
-    flex: 0 0 100% !important;
-    min-width: 100% !important;
-  }
-  .proj-controls { margin-top: 16px; }
-}
