@@ -265,7 +265,7 @@
     <div class="fade-in">
       <div class="proj-heading-row">
         <h2 class="proj-heading">Things I shipped,<br>with receipts.</h2>
-        <div class="proj-count" id="proj-slide-label">SELECTED · 01 OF 05</div>
+        <div class="proj-count" id="proj-count">SELECTED · 01 OF 05</div>
       </div>
 
       <div class="proj-slider-viewport">
@@ -273,8 +273,8 @@
       </div>
 
       <div class="proj-controls">
-        <button class="proj-arrow" id="proj-prev" aria-label="Previous">←</button>
-        <button class="proj-arrow" id="proj-next" aria-label="Next">→</button>
+        <button class="proj-arrow" id="proj-prev" aria-label="Previous project">&#8592;</button>
+        <button class="proj-arrow" id="proj-next" aria-label="Next project">&#8594;</button>
         <div class="proj-dots" id="proj-dots"></div>
         <span class="proj-slide-counter" id="proj-counter">01 / 05</span>
       </div>
@@ -781,7 +781,7 @@
     </div>
   `).join("");
 
-  // Render projects as slider
+  // Render projects + init slider
   const projGrid = document.getElementById("proj-grid");
   projGrid.innerHTML = PROJECTS.map(p => `
     <div class="proj-card">
@@ -810,16 +810,16 @@
     </div>
   `).join("");
 
-  // ── SLIDER LOGIC ──────────────────────────────────────────────
+  // ── PROJECT SLIDER ─────────────────────────────────────────────
   (function initProjSlider() {
-    const grid      = document.getElementById("proj-grid");
-    const prevBtn   = document.getElementById("proj-prev");
-    const nextBtn   = document.getElementById("proj-next");
-    const dotsWrap  = document.getElementById("proj-dots");
-    const counter   = document.getElementById("proj-counter");
-    const label     = document.getElementById("proj-slide-label");
-    const total     = PROJECTS.length;
-    let current     = 0;
+    const grid     = document.getElementById("proj-grid");
+    const prevBtn  = document.getElementById("proj-prev");
+    const nextBtn  = document.getElementById("proj-next");
+    const dotsWrap = document.getElementById("proj-dots");
+    const counter  = document.getElementById("proj-counter");
+    const countLbl = document.getElementById("proj-count");
+    const total    = PROJECTS.length;
+    let current    = 0;
 
     // Build dots
     dotsWrap.innerHTML = PROJECTS.map((_, i) =>
@@ -827,9 +827,8 @@
     ).join("");
 
     function visibleCount() {
-      const w = window.innerWidth;
-      if (w <= 768)  return 1;
-      if (w <= 1024) return 2;
+      if (window.innerWidth <= 768)  return 1;
+      if (window.innerWidth <= 1024) return 2;
       return 3;
     }
 
@@ -840,58 +839,55 @@
     function pad(n) { return String(n).padStart(2, "0"); }
 
     function goTo(idx) {
-      const vis = visibleCount();
       current = Math.max(0, Math.min(idx, maxIndex()));
       const cardW = grid.querySelector(".proj-card").offsetWidth;
       grid.style.transform = `translateX(-${current * cardW}px)`;
 
-      // Update dots
-      dotsWrap.querySelectorAll(".proj-dot").forEach((d, i) => {
-        d.classList.toggle("active", i === current);
-      });
+      // dots
+      dotsWrap.querySelectorAll(".proj-dot").forEach((d, i) =>
+        d.classList.toggle("active", i === current)
+      );
 
-      // Update counter and label
-      const display = current + 1;
-      counter.textContent = `${pad(display)} / ${pad(total)}`;
-      label.textContent   = `SELECTED · ${pad(display)} OF ${pad(total)}`;
+      // counters
+      const disp = current + 1;
+      counter.textContent  = `${pad(disp)} / ${pad(total)}`;
+      countLbl.textContent = `SELECTED · ${pad(disp)} OF ${pad(total)}`;
 
-      // Arrow states
+      // arrows
       prevBtn.disabled = current === 0;
       nextBtn.disabled = current >= maxIndex();
     }
 
-    // Arrow clicks
     prevBtn.addEventListener("click", () => goTo(current - 1));
     nextBtn.addEventListener("click", () => goTo(current + 1));
 
-    // Dot clicks
     dotsWrap.addEventListener("click", e => {
       const btn = e.target.closest(".proj-dot");
       if (btn) goTo(parseInt(btn.dataset.i));
     });
 
-    // Touch / swipe support
+    // Swipe support
     let touchStartX = 0;
-    grid.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    grid.addEventListener("touchend",   e => {
+    grid.addEventListener("touchstart", e => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    grid.addEventListener("touchend", e => {
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
     });
 
-    // Keyboard support when section is in view
+    // Keyboard (when section is in view)
     document.addEventListener("keydown", e => {
-      const section = document.getElementById("projects");
-      const rect = section.getBoundingClientRect();
+      const rect = document.getElementById("projects").getBoundingClientRect();
       if (rect.top < window.innerHeight && rect.bottom > 0) {
         if (e.key === "ArrowRight") goTo(current + 1);
         if (e.key === "ArrowLeft")  goTo(current - 1);
       }
     });
 
-    // Recalculate on resize
+    // Recalc on resize
     window.addEventListener("resize", () => goTo(current));
 
-    // Init
     goTo(0);
   })();
 
